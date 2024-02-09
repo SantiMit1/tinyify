@@ -22,7 +22,7 @@ if (!user) {
   </header>
   <hr class="border-slate-900 mt-5" />
   <main>
-    <form class="flex flex-col items-center justify-start w-full m-auto mt-10">
+    <form class="flex flex-col items-center justify-start w-full m-auto mt-10" action="/api/urls" method="POST">
       <label class="text-sm font-semibold mb-2 w-full" for="url-input"
         >Enter URL</label
       >
@@ -31,6 +31,8 @@ if (!user) {
         placeholder="http://example.com"
         type="text"
         id="url-input"
+        name="url"
+        required
       />
       <label class="text-sm font-semibold mb-2 w-full" for="slug"
         >Slug</label
@@ -40,6 +42,8 @@ if (!user) {
         placeholder="Leave empty to randomize"
         type="text"
         id="slug"
+        name="slug"
+        required
       />
       <input
         type="submit"
@@ -49,12 +53,3 @@ if (!user) {
     </form>
   </main>
 </Layout>
-
-<script>
-  const form = document.querySelector("form");
-  if (form) {
-    form.addEventListener("submit", e => {
-      e.preventDefault();
-    })
-  }
-</script>

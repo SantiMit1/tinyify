@@ -1,14 +1,23 @@
 ---
 interface Props {
-  name: string;
+  slug: string;
   url: string;
+  id: string;
 }
 
-const { name, url } = Astro.props;
+const { slug, url, id } = Astro.props;
 ---
 
 <div class="border border-slate-900 p-4 m-4 relative">
-  <h2 class="text-xl">/s/{name}</h2>
+  <a href={`/s/${slug}`} class="text-xl block hover:underline">/s/{slug}</a>
   <span class="text-gray-400 text-lg">{url}</span>
-  <button class="absolute right-5 top-1 text-2xl font-semibold text-gray-400 hover:text-white transition">...</button>
+  <span class="text-gray-400 text-lg">{id}</span>
+  <button
+    class="text-gray-400 hover:text-white transition" id={`delete-${id}`}
+    >borrar</button
+  >
 </div>
+
+<script>
+  //TODO: write delete logic
+</script>

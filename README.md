@@ -2,8 +2,8 @@
 
 ## TODO
 - [✅] sessions
-- [] add firebase firestore
-- [] API
-- [] redirect
-- [] dashboard card dropdown
+- [✅] add firebase firestore
+- [✅] API
+- [✅] redirect
+- [] agregar user id a firestore y filtrar las urls con eso
 - [] command palette

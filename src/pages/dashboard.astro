@@ -4,7 +4,7 @@ import { getAuth } from "firebase-admin/auth"
 import Layout from "../layouts/Layout.astro"
 import Card from "@components/dashboard/Card.astro"
 
-const res = await fetch("http://localhost:4321/api/get-urls?id=1")
+const res = await fetch("http://localhost:4321/api/urls")
 const urls = await res.json()
 
 const auth = getAuth(app)
@@ -20,7 +20,7 @@ if (!user) {
 }
 ---
 
-<Layout title="Tinyify Dashboard">
+<Layout title="Tinyify - Dashboard">
   <header class="flex flex-row justify-between items-center w-3/4 m-auto">
     <h3 class="text-xl">Dashboard</h3>
     <a class="text-lg hover:underline" href="/create">Create New Link</a>
@@ -30,7 +30,7 @@ if (!user) {
     <div class="grid-cols-autofit w-full">
       {
         urls.map(url => (
-          <Card name={url.name} url={url.url} />
+          <Card id={url.id} slug={url.slug} url={url.url} />
         ))
       }
     </div>
