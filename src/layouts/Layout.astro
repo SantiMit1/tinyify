@@ -1,6 +1,9 @@
 ---
+import Background from "@components/Background.astro";
+import Github from "@icons/Github.astro";
+
 interface Props {
-	title: string;
+  title: string;
 }
 
 const { title } = Astro.props;
@@ -8,44 +11,61 @@ const { title } = Astro.props;
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="description" content="Astro description" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Astro description" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <Background />
+    <nav class="flex flex-row items-center justify-between py-8 m-auto w-3/4">
+      <div>
+        <a href="/" class="text-2xl font-semibold">Tinyify</a>
+      </div>
+      <div class="flex flex-row gap-3 items-center justify-center">
+        <button class="font-semibold hover:text-gray-200 transition"
+          >Sign In</button
+        >
+        <a
+          href="https://github.com/SantiMit1/tinyify"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hover:text-gray-200 transition"
+          aria-label="Github repo"
+        >
+          <Github />
+        </a>
+      </div>
+    </nav>
+    <slot />
+  </body>
 </html>
 <style is:global>
-	:root {
-		--accent: 136, 58, 234;
-		--accent-light: 224, 204, 250;
-		--accent-dark: 49, 10, 101;
-		--accent-gradient: linear-gradient(
-			45deg,
-			rgb(var(--accent)),
-			rgb(var(--accent-light)) 30%,
-			white 60%
-		);
-	}
-	html {
-		font-family: system-ui, sans-serif;
-		background: #13151a;
-		background-size: 224px;
-	}
-	code {
-		font-family:
-			Menlo,
-			Monaco,
-			Lucida Console,
-			Liberation Mono,
-			DejaVu Sans Mono,
-			Bitstream Vera Sans Mono,
-			Courier New,
-			monospace;
-	}
+  body {
+    color: white;
+    font-family: "Inter", sans-serif;
+  }
+
+  main {
+    width: 75%;
+    margin: auto;
+  }
+
+  .fade-in {
+    animation: fade-in 0.5s ease-in-out;
+  }
+
+  @keyframes fade-in {
+    from {
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
 </style>
