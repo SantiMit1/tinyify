@@ -19,8 +19,11 @@ const mockUrls = [
   }
 ]
 
-export const GET: APIRoute = ({ request, params }) => {
-  return new Response(JSON.stringify(mockUrls), {
+export const GET: APIRoute = async ({ request }) => {
+  const creatorId = new URL(request.url).searchParams.get("id")
+  const resUrls = mockUrls.filter(url => url.creatorId === creatorId)
+
+  return new Response(JSON.stringify(resUrls), {
     headers: {
       "content-type": "application/json"
     },

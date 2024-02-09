@@ -1,28 +1,60 @@
 ---
+import { app } from "@/firebase/server";
+import { getAuth } from "firebase-admin/auth";
 import Layout from "../layouts/Layout.astro";
+
+const auth = getAuth(app);
+if (!Astro.cookies.has("session")) {
+  return Astro.redirect("/");
+}
+const sessionCookie = Astro.cookies.get("session").value;
+const decodedCookie = await auth.verifySessionCookie(sessionCookie);
+const user = await auth.getUser(decodedCookie.uid);
+
+if (!user) {
+  return Astro.redirect("/");
+}
 ---
 
 <Layout title="Tinyify - Create link">
   <header class="flex flex-row justify-between items-center w-3/4 m-auto">
     <h3 class="text-xl">Create new link</h3>
   </header>
-  <hr class="border-slate-900 mt-5">
+  <hr class="border-slate-900 mt-5" />
   <main>
     <form class="flex flex-col items-center justify-start w-full m-auto mt-10">
-      <label class="text-sm font-semibold mb-2 w-full" for="url-input">Enter URL</label>
-      <input class="bg-slate-900 outline-none px-4 py-2 rounded mb-6 w-full" placeholder="http://example.com" type="text" id="url-input">
-      <label class="text-sm font-semibold mb-2 w-full" for="url-input">Slug</label>
-      <input class="bg-slate-900 outline-none px-4 py-2 rounded mb-6 w-full" placeholder="Leave empty to randomize" type="text" id="url-input">
-      <input type="submit" value="Create Link" class="self-start text-lg bg-white text-black px-2 py-1 rounded-lg shadow hover:bg-gray-200 transition cursor-pointer">
+      <label class="text-sm font-semibold mb-2 w-full" for="url-input"
+        >Enter URL</label
+      >
+      <input
+        class="bg-slate-900 outline-none px-4 py-2 rounded mb-6 w-full"
+        placeholder="http://example.com"
+        type="text"
+        id="url-input"
+      />
+      <label class="text-sm font-semibold mb-2 w-full" for="slug"
+        >Slug</label
+      >
+      <input
+        class="bg-slate-900 outline-none px-4 py-2 rounded mb-6 w-full"
+        placeholder="Leave empty to randomize"
+        type="text"
+        id="slug"
+      />
+      <input
+        type="submit"
+        value="Create Link"
+        class="self-start text-lg bg-white text-black px-2 py-1 rounded-lg shadow hover:bg-gray-200 transition cursor-pointer"
+      />
     </form>
   </main>
 </Layout>
 
 <script>
-  const form = document.querySelector('form');
+  const form = document.querySelector("form");
   if (form) {
-    form.onsubmit = (e) => {
+    form.addEventListener("submit", e => {
       e.preventDefault();
-    }
+    })
   }
 </script>

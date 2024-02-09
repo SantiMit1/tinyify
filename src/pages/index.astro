@@ -1,14 +1,45 @@
 ---
 import Layout from "../layouts/Layout.astro";
+
+if(Astro.cookies.has("session")) {
+  return Astro.redirect("/dashboard");
+}
 ---
 
 <Layout title="Tinyify - URL Shortener">
   <main class="py-36 text-center">
     <h1 class="text-5xl mb-2 fade-in">Tinyify</h1>
-    <h2 class="text-gray-400 text-2xl mb-8 fade-in">Open Source Url Shortener</h2>
+    <h2 class="text-gray-400 text-2xl mb-8 fade-in">
+      Open Source Url Shortener
+    </h2>
     <button
       class="rounded shadow bg-white text-black w-auto font-semibold px-5 py-2 text-xl hover:bg-gray-200 transition fade-in"
+      id="google"
       >Sign In</button
-    >	
+    >
   </main>
 </Layout>
+
+<script>
+  import { getAuth, GoogleAuthProvider, signInWithPopup, inMemoryPersistence } from "firebase/auth";
+  import { app } from "@/firebase/client";
+
+  const auth = getAuth(app);
+  auth.setPersistence(inMemoryPersistence);
+  
+  const googleSignIn = document.querySelector("#google") as HTMLButtonElement;
+  googleSignIn.addEventListener("click", async () => {
+    const provider = new GoogleAuthProvider();
+    const userCredential =  await signInWithPopup(auth, provider);
+    const idToken = await userCredential.user.getIdToken();
+    const res = await fetch("/api/auth/signin", {
+      headers: {
+        Authorization: `Bearer ${idToken}`
+      }
+    });
+
+    if(res.redirected) {
+      window.location.assign(res.url);
+    }
+  })
+</script>

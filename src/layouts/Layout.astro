@@ -26,9 +26,23 @@ const { title } = Astro.props;
         <a href="/" class="text-2xl font-semibold">Tinyify</a>
       </div>
       <div class="flex flex-row gap-3 items-center justify-center">
-        <button class="font-semibold hover:text-gray-200 transition"
-          >Sign In</button
-        >
+        {
+          Astro.cookies.has("session") ? (
+            <button
+              class="font-semibold hover:text-gray-200 transition"
+              id="sign-out"
+            >
+              Sign Out
+            </button>
+          ) : (
+            <button
+              class="font-semibold hover:text-gray-200 transition"
+              id="google-sign-in"
+            >
+              Sign In
+            </button>
+          )
+        }
         <a
           href="https://github.com/SantiMit1/tinyify"
           target="_blank"
@@ -69,3 +83,50 @@ const { title } = Astro.props;
     }
   }
 </style>
+
+<script>
+  import {
+    getAuth,
+    GoogleAuthProvider,
+    signInWithPopup,
+    inMemoryPersistence,
+  } from "firebase/auth";
+  import { app } from "@/firebase/client";
+
+  const auth = getAuth(app);
+  auth.setPersistence(inMemoryPersistence);
+
+  const googleSignIn = document.querySelector(
+    "#google-sign-in"
+  ) as HTMLButtonElement;
+
+  if (googleSignIn) {
+    googleSignIn.addEventListener("click", async () => {
+      const provider = new GoogleAuthProvider();
+      const userCredential = await signInWithPopup(auth, provider);
+      const idToken = await userCredential.user.getIdToken();
+      const res = await fetch("/api/auth/signin", {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      });
+
+      if (res.redirected) {
+        window.location.assign(res.url);
+      }
+    });
+  }
+
+  const googleSignOut = document.querySelector(
+    "#sign-out"
+  ) as HTMLButtonElement;
+
+  if(googleSignOut) {
+    googleSignOut.addEventListener("click", async () => {
+      const res = await fetch("/api/auth/signout");
+      if (res.redirected) {
+        window.location.assign(res.url);
+      }
+    })
+  }
+</script>
