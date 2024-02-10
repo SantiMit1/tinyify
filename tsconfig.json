@@ -5,8 +5,8 @@
     "jsxImportSource": "react",
     "baseUrl": "./",
     "paths": {
-      "@components/*": ["src/components/*"],
-      "@icons/*": ["src/icons/*"],
+      "@/components/*": ["src/components/*"],
+      "@/icons/*": ["src/icons/*"],
       "@/*": ["src/*"],
       "@/firebase/*": ["firebase/*"],
     }

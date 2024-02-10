@@ -1,6 +1,7 @@
 ---
-import Background from "@components/Background.astro";
-import Github from "@icons/Github.astro";
+import Background from "@/components/Background.astro";
+import Github from "@/icons/Github.astro";
+import Command from "@/icons/Command.astro";
 
 interface Props {
   title: string;
@@ -29,25 +30,28 @@ const { title } = Astro.props;
         {
           Astro.cookies.has("session") ? (
             <button
-              class="font-semibold hover:text-gray-200 transition"
+              class="font-semibold hover:text-gray-400 transition"
               id="sign-out"
             >
               Sign Out
             </button>
           ) : (
             <button
-              class="font-semibold hover:text-gray-200 transition"
+              class="font-semibold hover:text-gray-400 transition"
               id="google-sign-in"
             >
               Sign In
             </button>
           )
         }
+        <button class="hover:text-gray-400 hover:scale-110 transition" id="command-btn">
+          <Command />
+        </button>
         <a
           href="https://github.com/SantiMit1/tinyify"
           target="_blank"
           rel="noopener noreferrer"
-          class="hover:text-gray-200 transition"
+          class="hover:text-gray-400 hover:scale-110 transition"
           aria-label="Github repo"
         >
           <Github />
@@ -55,6 +59,7 @@ const { title } = Astro.props;
       </div>
     </nav>
     <slot />
+    <ninja-keys class="dark" hideBreadcrumbs></ninja-keys>
   </body>
 </html>
 <style is:global>
@@ -66,6 +71,23 @@ const { title } = Astro.props;
   main {
     width: 75%;
     margin: auto;
+  }
+
+  ninja-keys:host(.dark) {
+    --ninja-backdrop-filter: none;
+    --ninja-overflow-background: rgba(0, 0, 0, 0.7);
+    --ninja-text-color: #7d7d7d;
+    --ninja-modal-background: rgba(17, 17, 17, 0.85);
+    --ninja-accent-color: rgb(110, 94, 210);
+    --ninja-secondary-background-color: rgba(51, 51, 51, 0.44);
+    --ninja-secondary-text-color: #888;
+    --ninja-selected-text-color: #eaeaea;
+    --ninja-selected-background: rgba(51, 51, 51, 0.44);
+    --ninja-icon-color: var(--ninja-secondary-text-color);
+    --ninja-separate-border: 1px solid var(--ninja-secondary-background-color);
+    --ninja-modal-shadow: 0 16px 70px rgba(0, 0, 0, 0.2);
+    --ninja-group-text-color: rgb(144, 149, 157);
+    --ninja-footer-background: rgba(30, 30, 30, 85%);
   }
 
   .fade-in {
@@ -97,6 +119,48 @@ const { title } = Astro.props;
     }
   }
 </style>
+
+<script>
+  import "ninja-keys";
+  const ninja = document.querySelector("ninja-keys");
+  const btn = document.querySelector("#command-btn");
+  btn.addEventListener("click", () => {
+    ninja.open();
+  });
+
+  ninja.data = [
+    {
+      id: "create",
+      title: "Create new link",
+      handler: () => {
+        window.location.assign("/create");
+      },
+    },
+    {
+      id: "dashboard",
+      title: "Dashboard",
+      handler: () => {
+        window.location.assign("/dashboard");
+      },
+    },
+    {
+      id: "repo",
+      title: "Explore the repo",
+      handler: () => {
+        window.location.assign("https://github.com/SantiMit1/tinyify/");
+      },
+    },
+    {
+      id: "bug",
+      title: "Report a bug",
+      handler: () => {
+        window.location.assign(
+          "https://github.com/SantiMit1/tinyify/issues/new"
+        );
+      },
+    },
+  ];
+</script>
 
 <script>
   import {
