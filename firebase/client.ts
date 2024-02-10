@@ -1,12 +1,12 @@
 import { initializeApp } from "firebase/app";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDpYd_vjnCYCw5AZo_u92CRShP12BwQFgQ",
-  authDomain: "tinyify-2cba0.firebaseapp.com",
-  projectId: "tinyify-2cba0",
-  storageBucket: "tinyify-2cba0.appspot.com",
-  messagingSenderId: "794655326549",
-  appId: "1:794655326549:web:986dd36166d962e70fefdc"
+  apiKey: import.meta.env.PUBLIC_FIREBASE_API_KEY,
+  authDomain: import.meta.env.PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.PUBLIC_FIREBASE_APP_ID
 };
 
 export const app = initializeApp(firebaseConfig);
