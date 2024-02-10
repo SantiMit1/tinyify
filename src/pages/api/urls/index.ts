@@ -72,3 +72,26 @@ export const POST: APIRoute = async ({ request, redirect, cookies }) => {
 
   return redirect("/dashboard");
 };
+
+export const DELETE: APIRoute = async ({ params, request }) => {
+  const requestUrl = new URL(request.url);
+  const urlId = requestUrl.searchParams.get("id");
+
+  if (!urlId) {
+    return new Response("Invalid request", {
+      status: 400,
+    });
+  }
+
+  try {
+    await urlsCollection.doc(urlId).delete();
+  } catch (error) {
+    return new Response("Error deleting url", {
+      status: 500,
+    });
+  }
+
+  return new Response("Url deleted", {
+    status: 200,
+  })
+}

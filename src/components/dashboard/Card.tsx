@@ -15,11 +15,11 @@ const Card: React.FC = ({ slug, url, urlId, description }: Props) => {
   }
 
   function deleteUrl() {
-    fetch(`/api/urls/delete/${urlId}`, {
+    fetch(`/api/urls?id=${urlId}`, {
       method: "DELETE",
     }).then(() => {
       window.location.reload();
-    });
+    })
   }
 
   return (
