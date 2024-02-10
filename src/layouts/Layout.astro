@@ -22,6 +22,8 @@ const { title } = Astro.props;
   </head>
   <body>
     <Background />
+    <wc-toast></wc-toast>
+    <ninja-keys class="dark" hideBreadcrumbs></ninja-keys>
     <nav class="flex flex-row items-center justify-between py-8 m-auto w-3/4">
       <div>
         <a href="/" class="text-2xl font-semibold">Tinyify</a>
@@ -44,7 +46,10 @@ const { title } = Astro.props;
             </button>
           )
         }
-        <button class="hover:text-gray-400 hover:scale-110 transition" id="command-btn">
+        <button
+          class="hover:text-gray-400 hover:scale-110 transition"
+          id="command-btn"
+        >
           <Command />
         </button>
         <a
@@ -59,7 +64,6 @@ const { title } = Astro.props;
       </div>
     </nav>
     <slot />
-    <ninja-keys class="dark" hideBreadcrumbs></ninja-keys>
   </body>
 </html>
 <style is:global>
@@ -170,6 +174,7 @@ const { title } = Astro.props;
     inMemoryPersistence,
   } from "firebase/auth";
   import { app } from "@/firebase/client";
+  import { toast } from "wc-toast";
 
   const auth = getAuth(app);
   auth.setPersistence(inMemoryPersistence);
@@ -188,6 +193,14 @@ const { title } = Astro.props;
           Authorization: `Bearer ${idToken}`,
         },
       });
+
+      if (!res.ok) {
+        toast("Failed to sign in", {
+          icon: {
+            type: "error",
+          },
+        });
+      }
 
       if (res.redirected) {
         window.location.assign(res.url);

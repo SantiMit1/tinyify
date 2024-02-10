@@ -38,7 +38,7 @@ export const POST: APIRoute = async ({ request, redirect, cookies }) => {
   })
 
   if(existingUrl.length > 0) {
-    return new Response("Slug already exists", {
+    return new Response(JSON.stringify({message: "Slug already exist"}), {
       status: 400,
     });
   }
@@ -65,7 +65,7 @@ export const POST: APIRoute = async ({ request, redirect, cookies }) => {
       description
     });
   } catch (error) {
-    return new Response("Error creating url", {
+    return new Response(JSON.stringify({ message: "Error creating url" }), {
       status: 500,
     });
   }
@@ -73,12 +73,12 @@ export const POST: APIRoute = async ({ request, redirect, cookies }) => {
   return redirect("/dashboard");
 };
 
-export const DELETE: APIRoute = async ({ params, request }) => {
+export const DELETE: APIRoute = async ({ request }) => {
   const requestUrl = new URL(request.url);
   const urlId = requestUrl.searchParams.get("id");
 
   if (!urlId) {
-    return new Response("Invalid request", {
+    return new Response(JSON.stringify({ message: "Invalid request" }), {
       status: 400,
     });
   }
@@ -86,12 +86,12 @@ export const DELETE: APIRoute = async ({ params, request }) => {
   try {
     await urlsCollection.doc(urlId).delete();
   } catch (error) {
-    return new Response("Error deleting url", {
+    return new Response(JSON.stringify({ message: "Internal server error" }), {
       status: 500,
     });
   }
 
-  return new Response("Url deleted", {
+  return new Response(JSON.stringify({ message: "Url deleted successfully" }), {
     status: 200,
   })
 }

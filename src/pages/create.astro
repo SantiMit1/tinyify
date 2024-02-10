@@ -61,3 +61,51 @@ if (!user) {
     </form>
   </main>
 </Layout>
+
+<script>
+  import { toast } from "wc-toast";
+
+  const form = document.querySelector("form");
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const url = e.target[0].value;
+    const slug = e.target[1].value;
+    const description = e.target[2].value;
+    const formData = new FormData();
+    formData.append("url", url);
+    formData.append("slug", slug);
+    formData.append("description", description);
+
+    try {
+      const res = await fetch("/api/urls", {
+        method: "POST",
+        body: formData,
+      });
+      
+      if (!res.ok) {
+        const data = await res.json();
+        console.log(data.message);
+        toast(data.message, {
+          icon: {
+            type: "error",
+          },
+        });
+      }
+
+      if (res.redirected) {
+        toast("Url created successfully", {
+          icon: {
+            type: "success",
+          },
+        });
+        window.location.assign(res.url);
+      }
+    } catch (error) {
+      toast(error, {
+        icon: {
+          type: "error",
+        },
+      });
+    }
+  });
+</script>

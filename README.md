@@ -9,6 +9,6 @@
 - [✅] delete client-side logic
 - [✅] agregar user id a firestore y filtrar las urls con eso
 - [✅] command palette
-- [] handle errors
+- [] handle delete errors
 - [] better styling
 - [] better readme
