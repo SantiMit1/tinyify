@@ -32,12 +32,12 @@ if (!user) {
     <h3 class="text-xl">Dashboard</h3>
     <a class="text-lg hover:underline" href="/create">Create New Link</a>
   </header>
-  <hr class="border-slate-900 mt-5">
+  <hr class="border-slate-900 m-5">
   <main>
     <div class="grid-cols-autofit w-full">
       {
         urls.map(url => (
-            <Card id={url.id} slug={url.slug} url={url.url} description={url.description} />
+            <Card urlId={url.id} slug={url.slug} url={url.url} description={url.description} client:load />
         ))
       }
     </div>
