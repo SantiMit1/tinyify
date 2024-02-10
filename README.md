@@ -11,3 +11,4 @@
 - [✅] command palette
 - [] handle errors
 - [] better styling
+- [] better readme
