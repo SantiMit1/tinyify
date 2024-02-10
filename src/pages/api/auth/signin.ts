@@ -18,6 +18,9 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
     return new Response("Token invalido", { status: 401 });
   }
 
+  const users = await auth.listUsers()
+  const userUid = await users.users[0].uid
+
   /* Crear y establecer una cookie de sesión */
   const fiveDays = 60 * 60 * 24 * 5 * 1000;
   const sessionCookie = await auth.createSessionCookie(idToken, {
@@ -27,6 +30,10 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
   cookies.set("session", sessionCookie, {
     path: "/",
   });
+
+  cookies.set("userUid", userUid, {
+    path: "/",
+  })
 
   return redirect("/dashboard");
 };

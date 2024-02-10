@@ -5,8 +5,10 @@ import { getFirestore } from "firebase-admin/firestore";
 const db = getFirestore(app);
 const urlsCollection = db.collection("urls");
 
-export const GET: APIRoute = async () => {
-  const snapshot = await urlsCollection.get();
+export const GET: APIRoute = async ({ request }) => {
+  const requestUrl = new URL(request.url);
+  const userUid = requestUrl.searchParams.get("userUid");
+  const snapshot = await urlsCollection.where("userId", "==", userUid).get();
   const urls = snapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
@@ -20,11 +22,12 @@ export const GET: APIRoute = async () => {
   });
 };
 
-export const POST: APIRoute = async ({ request, redirect }) => {
+export const POST: APIRoute = async ({ request, redirect, cookies }) => {
   const formData = await request.formData();
   const url = formData.get("url").toString();
   let slug = formData.get("slug").toString();
   let description = formData.get("description").toString();
+  const userId = cookies.get("userUid").value;
 
   const snapshot = await urlsCollection.where("slug", "==", slug).get();
   const existingUrl = snapshot.docs.map((doc) => {
@@ -58,7 +61,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     await urlsCollection.add({
       url,
       slug,
-      userId: "123",
+      userId,
       description
     });
   } catch (error) {

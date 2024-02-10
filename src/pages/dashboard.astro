@@ -8,11 +8,9 @@ interface Url {
   id: string
   slug: string
   url: string
-  description: string
+  description: string,
+  userId: string
 }
-
-const res = await fetch("http://localhost:4321/api/urls")
-const urls: Url[] = await res.json()
 
 const auth = getAuth(app)
 if (!Astro.cookies.has("session")) {
@@ -25,6 +23,11 @@ const user = await auth.getUser(decodedCookie.uid);
 if (!user) {
   return Astro.redirect("/");
 }
+
+const userUid = user.uid;
+
+const res = await fetch(`http://localhost:4321/api/urls?userUid=${userUid}`)
+const urls: Url[] = await res.json()
 ---
 
 <Layout title="Tinyify - Dashboard">
