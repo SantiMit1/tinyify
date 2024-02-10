@@ -40,6 +40,13 @@ if (!user) {
             <Card urlId={url.id} slug={url.slug} url={url.url} description={url.description} client:load />
         ))
       }
+      {
+        urls.length === 0 && (
+          <div class="w-full text-center">
+            <h3 class="text-xl">No URLs found</h3>
+          </div>
+        )
+      }
     </div>
   </main>
 </Layout>
