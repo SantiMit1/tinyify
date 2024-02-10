@@ -8,14 +8,14 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
   /* Obtener el token de las cabeceras de la solicitud */
   const idToken = request.headers.get("Authorization")?.split("Bearer ")[1];
   if (!idToken) {
-    return new Response("Token no encontrado", { status: 401 });
+    return new Response("Token not found", { status: 401 });
   }
 
   /* Verificar la id del token */
   try {
     await auth.verifyIdToken(idToken);
   } catch (error) {
-    return new Response("Token invalido", { status: 401 });
+    return new Response("Invalid token", { status: 401 });
   }
 
   const users = await auth.listUsers()
