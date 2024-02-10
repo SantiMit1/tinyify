@@ -11,7 +11,7 @@ const Card: React.FC = ({ slug, url, urlId, description }: Props) => {
   const [showMenu, setShowMenu] = useState(false);
 
   function copyToClipboard() {
-    navigator.clipboard.writeText(`http://localhost:4321/s/${slug}`); //TODO: cambiar link
+    navigator.clipboard.writeText(`https://tinyify.vercel.app/s/${slug}`);
   }
 
   function deleteUrl() {

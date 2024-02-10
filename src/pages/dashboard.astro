@@ -26,7 +26,7 @@ if (!user) {
 
 const userUid = user.uid;
 
-const res = await fetch(`http://localhost:4321/api/urls?userUid=${userUid}`)
+const res = await fetch(`https://tinyify.vercel.app/api/urls?userUid=${userUid}`)
 const urls: Url[] = await res.json()
 ---
 
