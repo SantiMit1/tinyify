@@ -2,10 +2,17 @@
 import { app } from "@/firebase/server"
 import { getAuth } from "firebase-admin/auth"
 import Layout from "../layouts/Layout.astro"
-import Card from "@components/dashboard/Card.astro"
+import Card from "@components/dashboard/Card.tsx"
+
+interface Url {
+  id: string
+  slug: string
+  url: string
+  description: string
+}
 
 const res = await fetch("http://localhost:4321/api/urls")
-const urls = await res.json()
+const urls: Url[] = await res.json()
 
 const auth = getAuth(app)
 if (!Astro.cookies.has("session")) {
@@ -30,7 +37,7 @@ if (!user) {
     <div class="grid-cols-autofit w-full">
       {
         urls.map(url => (
-          <Card id={url.id} slug={url.slug} url={url.url} />
+            <Card id={url.id} slug={url.slug} url={url.url} description={url.description} />
         ))
       }
     </div>

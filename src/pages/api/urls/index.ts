@@ -23,12 +23,35 @@ export const GET: APIRoute = async () => {
 export const POST: APIRoute = async ({ request, redirect }) => {
   const formData = await request.formData();
   const url = formData.get("url").toString();
-  const slug = formData.get("slug").toString();
+  let slug = formData.get("slug").toString();
+  let description = formData.get("description").toString();
 
-  if (!url || !slug) {
+  const snapshot = await urlsCollection.where("slug", "==", slug).get();
+  const existingUrl = snapshot.docs.map((doc) => {
+    return {
+      id: doc.id,
+      ...doc.data(),
+    };
+  })
+
+  if(existingUrl.length > 0) {
+    return new Response("Slug already exists", {
+      status: 400,
+    });
+  }
+
+  if (!url) {
     return new Response("Invalid request", {
       status: 400,
     });
+  }
+
+  if (!description) {
+    description = "No description provided";
+  }
+
+  if (!slug) {
+    slug = Math.random().toString(36).substring(7);
   }
 
   try {
@@ -36,6 +59,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
       url,
       slug,
       userId: "123",
+      description
     });
   } catch (error) {
     return new Response("Error creating url", {
