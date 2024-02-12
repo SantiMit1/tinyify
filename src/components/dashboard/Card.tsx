@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 interface Props {
   slug: string;
@@ -9,9 +9,11 @@ interface Props {
 
 const Card: React.FC = ({ slug, url, urlId, description }: Props) => {
   const [showMenu, setShowMenu] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   function copyToClipboard() {
     navigator.clipboard.writeText(`https://tinyify.vercel.app/s/${slug}`);
+    setShowMenu(false);
   }
 
   function deleteUrl() {
@@ -19,8 +21,22 @@ const Card: React.FC = ({ slug, url, urlId, description }: Props) => {
       method: "DELETE",
     }).then(() => {
       window.location.reload();
-    })
+    });
+    setShowMenu(false);
   }
+
+  function handleClickOutside(event: MouseEvent) {
+    if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+      setShowMenu(false);
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="border border-slate-900 p-4 m-4 relative flex flex-col items-start justify-center rounded">
@@ -39,6 +55,7 @@ const Card: React.FC = ({ slug, url, urlId, description }: Props) => {
         ...
       </button>
       <div
+        ref={menuRef}
         className={`${
           showMenu ? "block fade-in-dropdown" : "hidden fade-out-dropdown"
         } flex flex-col bg-slate-900 absolute top-12 right-0 border border-slate-800 rounded-md px-1 py-2`}
