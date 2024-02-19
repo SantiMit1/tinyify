@@ -1,13 +1,13 @@
 import { useState, useRef, useEffect } from "react";
-
 interface Props {
   slug: string;
   url: string;
   urlId: string;
   description: string;
+  views: number;
 }
 
-const Card: React.FC = ({ slug, url, urlId, description }: Props) => {
+const Card: React.FC = ({ slug, url, urlId, description, views }: Props) => {
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -47,7 +47,10 @@ const Card: React.FC = ({ slug, url, urlId, description }: Props) => {
         /s/{slug}
       </a>
       <span className="text-gray-400">{url}</span>
-      <p className="text-gray-300">{description}</p>
+      <div className="flex flex-row items-center justify-between w-full">
+        <p className="text-gray-300">{description}</p>
+        <span className="text-gray-300">{views} clicks</span>
+      </div>
       <button
         className="text-gray-400 hover:text-white transition absolute top-1 right-6 text-3xl"
         onClick={() => setShowMenu(!showMenu)}

@@ -5,11 +5,12 @@ import Layout from "../layouts/Layout.astro"
 import Card from "@/components/dashboard/Card.tsx"
 
 interface Url {
-  id: string
-  slug: string
-  url: string
-  description: string,
-  userId: string
+  id: string;
+  slug: string;
+  url: string;
+  description: string;
+  userId: string;
+  views: number;
 }
 
 const auth = getAuth(app)
@@ -40,7 +41,7 @@ const urls: Url[] = await res.json()
     <div class="grid-cols-autofit w-full">
       {
         urls.map(url => (
-            <Card urlId={url.id} slug={url.slug} url={url.url} description={url.description} client:load />
+            <Card urlId={url.id} slug={url.slug} url={url.url} description={url.description} views={url.views} client:load />
         ))
       }
       {
