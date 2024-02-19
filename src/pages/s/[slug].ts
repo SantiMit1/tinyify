@@ -8,7 +8,10 @@ const urlsCollection = db.collection("urls");
 export const GET: APIRoute = async ({ params, redirect }) => {
   const { slug } = params;
   const snapshot = await urlsCollection.where("slug", "==", slug).get();
-  const url = snapshot.docs.map((doc) => ({ ...doc.data() }))[0];
+  let { url } = snapshot.docs.map((doc) => ({ ...doc.data() }))[0];
+  if (!url.startsWith("http://") && !url.startsWith("https://")) {
+    url = "http://" + url;
+  }
 
-  return redirect(`${url.url}`);
+  return redirect(`${url}`);
 };
