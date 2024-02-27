@@ -62,7 +62,8 @@ export const POST: APIRoute = async ({ request, redirect, cookies }) => {
       url,
       slug,
       userId,
-      description
+      description,
+      views: 0
     });
   } catch (error) {
     return new Response(JSON.stringify({ message: "Error creating url" }), {
